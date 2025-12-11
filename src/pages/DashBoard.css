@@ -1,0 +1,40 @@
+.dashboard-container {
+    padding: 2rem;
+}
+
+.dashboard-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.dashboard-container .no-blogs-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #fff9;
+    padding: 2rem;
+}
+
+.loading-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #ffffff;
+    padding: 2rem;
+}
+
+.error-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #e74c3c;
+    padding: 2rem;
+    background-color: rgba(231, 76, 60, 0.1);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.blogs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
