@@ -1,20 +1,9 @@
-import { useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
+import { useRef, useImperativeHandle, forwardRef } from 'react';
 import './BlogForm.css';
 
 const Step1 = forwardRef(({ data, onChange, errors }, ref) => {
   const titleRef = useRef(null);
   const categoryRef = useRef(null);
-
-  useEffect(() => {
-    if (data) {
-      if (titleRef.current) {
-        titleRef.current.value = data.title || '';
-      }
-      if (categoryRef.current) {
-        categoryRef.current.value = data.category || '';
-      }
-    }
-  }, [data]);
 
   const getCurrentValues = () => {
     return {
@@ -48,7 +37,7 @@ const Step1 = forwardRef(({ data, onChange, errors }, ref) => {
           type="text"
           id="title"
           name="title"
-          defaultValue={data?.title || ''}
+          value={data?.title || ''}
           onChange={handleChange}
           onBlur={handleBlur}
           className={`form-input ${errors?.title ? 'form-input-error' : ''}`}
@@ -71,7 +60,7 @@ const Step1 = forwardRef(({ data, onChange, errors }, ref) => {
           type="text"
           id="category"
           name="category"
-          defaultValue={data?.category || ''}
+          value={data?.category || ''}
           onChange={handleChange}
           onBlur={handleBlur}
           className={`form-input ${errors?.category ? 'form-input-error' : ''}`}

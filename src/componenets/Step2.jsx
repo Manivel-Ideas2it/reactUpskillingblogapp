@@ -1,16 +1,8 @@
-import { useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
+import { useRef, useImperativeHandle, forwardRef } from 'react';
 import './BlogForm.css';
 
 const Step2 = forwardRef(({ data, onChange, errors }, ref) => {
   const descriptionRef = useRef(null);
-
-  useEffect(() => {
-    if (data) {
-      if (descriptionRef.current) {
-        descriptionRef.current.value = data.description || '';
-      }
-    }
-  }, [data]);
 
   const getCurrentValues = () => {
     return {
@@ -42,7 +34,7 @@ const Step2 = forwardRef(({ data, onChange, errors }, ref) => {
           ref={descriptionRef}
           id="description"
           name="description"
-          defaultValue={data?.description || ''}
+          value={data?.description || ''}
           onChange={handleChange}
           onBlur={handleBlur}
           className={`form-textarea ${errors?.description ? 'form-textarea-error' : ''}`}

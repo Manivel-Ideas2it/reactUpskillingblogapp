@@ -98,6 +98,58 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async (userData) => {
+    try {
+      dispatch({ type: AUTH_ACTIONS.LOGIN_START });
+
+      const usersStr = localStorage.getItem('users');
+      const users = usersStr ? JSON.parse(usersStr) : [];
+
+      const emailLower = userData.email.toLowerCase().trim();
+      const existingUser = users.find(u => u.email.toLowerCase() === emailLower);
+
+      if (existingUser) {
+        const errorMessage = 'Email already exists';
+        dispatch({
+          type: AUTH_ACTIONS.LOGIN_FAILURE,
+          payload: errorMessage,
+        });
+        return { success: false, error: errorMessage };
+      }
+
+      const userId = Math.floor(Math.random() * 10) + 1;
+      const user = {
+        id: userId,
+        name: userData.name.trim(),
+        email: userData.email.trim(),
+      };
+      const token = `fake_token_${userId}`;
+
+      users.push({
+        ...user,
+        password: userData.password,
+      });
+      localStorage.setItem('users', JSON.stringify(users));
+
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('user', JSON.stringify(user));
+
+      dispatch({
+        type: AUTH_ACTIONS.LOGIN_SUCCESS,
+        payload: { user, token },
+      });
+
+      return { success: true };
+    } catch (error) {
+      const errorMessage = error.message || 'Registration failed';
+      dispatch({
+        type: AUTH_ACTIONS.LOGIN_FAILURE,
+        payload: errorMessage,
+      });
+      return { success: false, error: errorMessage };
+    }
+  };
+
   const login = async (credentials) => {
     try {
       dispatch({ type: AUTH_ACTIONS.LOGIN_START });
@@ -114,7 +166,7 @@ export const AuthProvider = ({ children }) => {
         credentials.password === demoCredentials.password
       ) {
         const user = {
-          id: '1',
+          id: 1,
           email: credentials.email,
           name: 'Demo User',
         };
@@ -129,26 +181,37 @@ export const AuthProvider = ({ children }) => {
         });
 
         return { success: true };
-      } else {
-        try {
-          const response = await axiosInstance.post('/auth/login', credentials);
-          const { user, token } = response.data;
-
-          localStorage.setItem('authToken', token);
-          localStorage.setItem('user', JSON.stringify(user));
-
-          dispatch({
-            type: AUTH_ACTIONS.LOGIN_SUCCESS,
-            payload: { user, token },
-          });
-
-          return { success: true };
-        } catch (apiError) {
-          throw apiError;
-        }
       }
+
+      const usersStr = localStorage.getItem('users');
+      const users = usersStr ? JSON.parse(usersStr) : [];
+
+      const emailLower = credentials.email.toLowerCase().trim();
+      const user = users.find(u => u.email.toLowerCase() === emailLower);
+
+      if (!user || user.password !== credentials.password) {
+        const errorMessage = 'Invalid email or password';
+        dispatch({
+          type: AUTH_ACTIONS.LOGIN_FAILURE,
+          payload: errorMessage,
+        });
+        return { success: false, error: errorMessage };
+      }
+
+      const { password, ...userWithoutPassword } = user;
+      const token = `fake_token_${user.id}`;
+
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('user', JSON.stringify(userWithoutPassword));
+
+      dispatch({
+        type: AUTH_ACTIONS.LOGIN_SUCCESS,
+        payload: { user: userWithoutPassword, token },
+      });
+
+      return { success: true };
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || 'Invalid email or password';
+      const errorMessage = error.message || 'Invalid email or password';
       dispatch({
         type: AUTH_ACTIONS.LOGIN_FAILURE,
         payload: errorMessage,
@@ -165,6 +228,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     ...state,
+    register,
     login,
     logout,
     checkAuth,

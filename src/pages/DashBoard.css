@@ -1,33 +1,66 @@
 .dashboard-container {
     padding: 2rem;
+    min-height: calc(100vh - 80px);
 }
 
 .dashboard-title {
     font-size: 2rem;
     margin-bottom: 2rem;
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
-.dashboard-container .no-blogs-message {
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
     text-align: center;
-    font-size: 1.2rem;
-    color: #fff9;
     padding: 2rem;
+}
+
+.empty-state-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.empty-state-message {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin: 0 0 2rem 0;
+}
+
+.empty-state-button {
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    background-color: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.empty-state-button:hover {
+    background-color: var(--accent-hover);
 }
 
 .loading-message {
     text-align: center;
     font-size: 1.2rem;
-    color: #ffffff;
+    color: var(--text-primary);
     padding: 2rem;
 }
 
 .error-message {
     text-align: center;
     font-size: 1.2rem;
-    color: #e74c3c;
+    color: var(--button-danger);
     padding: 2rem;
-    background-color: rgba(231, 76, 60, 0.1);
+    background-color: rgba(220, 53, 69, 0.1);
     border-radius: 8px;
     margin-bottom: 1rem;
 }

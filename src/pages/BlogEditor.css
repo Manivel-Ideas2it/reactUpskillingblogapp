@@ -1,32 +1,81 @@
-.blog-editor-container {
-    width: 80%;
-    background-color: #1a1a1a;
-    margin: 2rem auto;
-    padding: 2rem;
-    border-radius: 8px;
+.blog-editor-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--bg-primary);
+}
+
+.blog-editor-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    overflow-y: auto;
+    background-color: var(--bg-primary);
+}
+
+.blog-editor-card {
+    width: 100%;
+    max-width: 700px;
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+.blog-editor-header {
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 .blog-editor-title {
-    text-align: center;
     font-size: 2rem;
-    margin-bottom: 1.5rem;
-    color: #ffffff;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.blog-editor-subtitle {
+    font-size: 1rem;
+    margin: 0;
+    color: var(--text-muted);
+    font-weight: 400;
 }
 
 .blog-editor-error {
-    background-color: rgba(231, 76, 60, 0.1);
-    color: #e74c3c;
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--button-danger);
     padding: 1rem;
-    border-radius: 6px;
-    margin-bottom: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
     text-align: center;
+    border: 1px solid rgba(220, 53, 69, 0.2);
 }
 
 .blog-editor-loading {
-    background-color: rgba(52, 152, 219, 0.1);
-    color: #3498db;
+    background-color: rgba(100, 108, 255, 0.1);
+    color: var(--accent-color);
     padding: 1rem;
-    border-radius: 6px;
-    margin-bottom: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
     text-align: center;
+    border: 1px solid rgba(100, 108, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    .blog-editor-wrapper {
+        padding: 1rem 0.5rem;
+    }
+
+    .blog-editor-card {
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+
+    .blog-editor-title {
+        font-size: 1.75rem;
+    }
 }

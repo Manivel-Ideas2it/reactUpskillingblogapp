@@ -1,0 +1,60 @@
+.flow-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--bg-nav);
+  border-bottom: 1px solid rgba(100, 108, 255, 0.2);
+}
+
+.flow-header-back {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  flex: 0 0 auto;
+}
+
+.flow-header-back:hover {
+  opacity: 0.8;
+}
+
+.flow-header-title {
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+
+.flow-header-step {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .flow-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .flow-header-title {
+    order: -1;
+    flex-basis: 100%;
+    text-align: center;
+  }
+
+  .flow-header-back {
+    flex: 1;
+  }
+
+  .flow-header-step {
+    flex: 1;
+    text-align: right;
+  }
+}
+

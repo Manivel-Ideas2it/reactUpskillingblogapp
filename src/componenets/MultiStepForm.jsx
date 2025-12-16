@@ -41,30 +41,6 @@ const MultiStepForm = ({ initialData, onStepChange, formRef }) => {
     }
   }, [currentStep, onStepChange]);
 
-  useEffect(() => {
-    if (formRef) {
-      formRef.current = {
-        getFormData: () => {
-          let allData = { ...formDataRef.current };
-          
-          if (step3Ref.current && step3Ref.current.getCurrentValues) {
-            const step3Data = step3Ref.current.getCurrentValues();
-            allData = { ...allData, ...step3Data };
-            formDataRef.current = { ...formDataRef.current, ...step3Data };
-          }
-          const data = {
-            title: allData.title || '',
-            category: allData.category || '',
-            description: allData.description || '',
-            tags: allData.tags || '',
-            authorName: allData.authorName || '',
-          };
-          return data;
-        },
-      };
-    }
-  }, [formRef]);
-
   const validationRules = {
     step1: {
       title: {
@@ -74,8 +50,8 @@ const MultiStepForm = ({ initialData, onStepChange, formRef }) => {
       },
       category: {
         required: true,
-        regex: /^[a-zA-Z\s-]{2,50}$/,
-        errorMessage: 'Category must be 2-50 characters and contain only letters, spaces, and hyphens',
+        regex: /^[A-Za-z0-9\s\/-]{2,50}$/,
+        errorMessage: 'Category must be 2-50 characters and contain only letters, numbers, spaces, forward slashes, and hyphens',
       },
     },
     step2: {
@@ -88,16 +64,142 @@ const MultiStepForm = ({ initialData, onStepChange, formRef }) => {
     step3: {
       tags: {
         required: false,
-        regex: /^[a-zA-Z0-9\s,-]*$/,
-        errorMessage: 'Tags can only contain letters, numbers, spaces, commas, and hyphens',
+        regex: /^[A-Za-z0-9\s,-]*$/,
+        errorMessage: 'Tags can only contain letters (uppercase or lowercase), numbers, spaces, commas, and hyphens',
       },
       authorName: {
         required: false,
-        regex: /^[a-zA-Z\s-]{0,100}$/,
-        errorMessage: 'Author name must be up to 100 characters and contain only letters, spaces, and hyphens',
+        regex: /^[A-Za-z\s-]{0,100}$/,
+        errorMessage: 'Author name must be up to 100 characters and contain only letters (uppercase or lowercase), spaces, and hyphens',
       },
     },
   };
+
+  useEffect(() => {
+    if (formRef) {
+      formRef.current = {
+        getFormData: () => {
+          let allData = { ...formDataRef.current };
+          
+          if (step1Ref.current && step1Ref.current.getCurrentValues) {
+            const step1Data = step1Ref.current.getCurrentValues();
+            allData = { ...allData, ...step1Data };
+          }
+          if (step2Ref.current && step2Ref.current.getCurrentValues) {
+            const step2Data = step2Ref.current.getCurrentValues();
+            allData = { ...allData, ...step2Data };
+          }
+          if (step3Ref.current && step3Ref.current.getCurrentValues) {
+            const step3Data = step3Ref.current.getCurrentValues();
+            allData = { ...allData, ...step3Data };
+          }
+          
+          formDataRef.current = { ...formDataRef.current, ...allData };
+          
+          const data = {
+            title: allData.title || '',
+            category: allData.category || '',
+            description: allData.description || '',
+            tags: allData.tags || '',
+            authorName: allData.authorName || '',
+          };
+          return data;
+        },
+        validateAllSteps: () => {
+          const allErrors = {};
+          let firstInvalidStep = null;
+          
+          let allData = { ...formDataRef.current };
+          
+          if (step1Ref.current && step1Ref.current.getCurrentValues) {
+            const step1Data = step1Ref.current.getCurrentValues();
+            allData = { ...allData, ...step1Data };
+          }
+          if (step2Ref.current && step2Ref.current.getCurrentValues) {
+            const step2Data = step2Ref.current.getCurrentValues();
+            allData = { ...allData, ...step2Data };
+          }
+          if (step3Ref.current && step3Ref.current.getCurrentValues) {
+            const step3Data = step3Ref.current.getCurrentValues();
+            allData = { ...allData, ...step3Data };
+          }
+          
+          formDataRef.current = { ...formDataRef.current, ...allData };
+          
+          for (let step = 1; step <= 3; step++) {
+            const rules = validationRules[`step${step}`];
+            const stepErrors = {};
+            
+            Object.keys(rules).forEach((fieldName) => {
+              const rule = rules[fieldName];
+              const value = (allData[fieldName] || '').toString().trim();
+              
+              if (rule.required && !value) {
+                stepErrors[fieldName] = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required`;
+                allErrors[fieldName] = stepErrors[fieldName];
+              } else if (value && rule.regex && !rule.regex.test(value)) {
+                stepErrors[fieldName] = rule.errorMessage;
+                allErrors[fieldName] = stepErrors[fieldName];
+              }
+            });
+            
+            if (Object.keys(stepErrors).length > 0 && firstInvalidStep === null) {
+              firstInvalidStep = step;
+            }
+          }
+          
+          setStepErrors(allErrors);
+          
+          return {
+            isValid: Object.keys(allErrors).length === 0,
+            firstInvalidStep,
+            allErrors,
+          };
+        },
+        isFormValid: () => {
+         
+          let allData = { ...formDataRef.current };
+          
+         
+          if (currentStep === 1 && step1Ref.current && step1Ref.current.getCurrentValues) {
+            const step1Data = step1Ref.current.getCurrentValues();
+            allData = { ...allData, ...step1Data };
+          } else if (currentStep === 2 && step2Ref.current && step2Ref.current.getCurrentValues) {
+            const step2Data = step2Ref.current.getCurrentValues();
+            allData = { ...allData, ...step2Data };
+          } else if (currentStep === 3 && step3Ref.current && step3Ref.current.getCurrentValues) {
+            const step3Data = step3Ref.current.getCurrentValues();
+            allData = { ...allData, ...step3Data };
+          }
+          
+        
+          for (let step = 1; step <= 3; step++) {
+            const rules = validationRules[`step${step}`];
+            
+            for (const fieldName of Object.keys(rules)) {
+              const rule = rules[fieldName];
+              const value = (allData[fieldName] || '').toString().trim();
+              
+            
+              if (rule.required && !value) {
+                return false;
+              }
+              
+           
+              if (value && rule.regex && !rule.regex.test(value)) {
+                return false;
+              }
+            }
+          }
+          
+          return true;
+        },
+        setCurrentStep: (step) => {
+          setCurrentStep(step);
+        },
+      };
+    }
+  }, [formRef]);
 
   const validateStep = (step) => {
     const errors = {};
@@ -131,12 +233,28 @@ const MultiStepForm = ({ initialData, onStepChange, formRef }) => {
     });
     
     formDataRef.current = updatedData;
+    
+    
     const updatedErrors = { ...stepErrors };
+    const rules = validationRules[`step${currentStep}`];
+    
     Object.keys(stepData).forEach((key) => {
-      if (updatedErrors[key]) {
+      if (rules && rules[key]) {
+        const rule = rules[key];
+        const value = (stepData[key] || '').toString().trim();
+        
+        if (rule.required && !value) {
+          updatedErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
+        } else if (value && rule.regex && !rule.regex.test(value)) {
+          updatedErrors[key] = rule.errorMessage;
+        } else {
+          delete updatedErrors[key];
+        }
+      } else {
         delete updatedErrors[key];
       }
     });
+    
     setStepErrors(updatedErrors);
   };
 

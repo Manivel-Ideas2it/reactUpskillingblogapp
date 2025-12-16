@@ -2,10 +2,12 @@ import NavBar from "../componenets/NavBar";
 import BlogCard from "../componenets/BlogCard";
 import { BlogContext } from "../context/BlogContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "./DashBoard.css";
 
 const DashBoard = () => {
   const { blogs, loading, error } = useContext(BlogContext);
+  const navigate = useNavigate();
   
   return (
     <>
@@ -26,8 +28,15 @@ const DashBoard = () => {
         )}
         
         {!loading && !error && blogs.length === 0 && (
-          <div className="no-blogs-message">
-            <p>Create your first blog!</p>
+          <div className="empty-state">
+            <p className="empty-state-title">No blogs yet 👋</p>
+            <p className="empty-state-message">Create your first blog to get started.</p>
+            <button 
+              className="empty-state-button"
+              onClick={() => navigate('/create')}
+            >
+              Create Blog
+            </button>
           </div>
         )}
         

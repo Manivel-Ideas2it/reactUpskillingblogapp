@@ -3,11 +3,11 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: #7c7c7c;
+    background-color: var(--bg-nav);
 }
 
 .nav-heading {
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 1.5rem;
     margin: 0;
 }
@@ -19,11 +19,31 @@
 }
 
 .nav-user-info {
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 0.9rem;
     padding: 0.4rem 0.8rem;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 6px;
+}
+
+.nav-theme-toggle {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: var(--button-primary);
+    color: var(--button-text);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-theme-toggle:hover {
+    background-color: var(--button-primary-hover);
+    transform: scale(1.1);
 }
 
 .nav-button {
@@ -33,22 +53,23 @@
     font-size: 1rem;
     font-weight: 500;
     font-family: inherit;
-    background-color: #1a1a1a;
-    color: #ffffff;
+    background-color: var(--button-primary);
+    color: var(--button-text);
     text-decoration: none;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .nav-button:hover {
-    background-color: #2a2a2a;
+    background-color: var(--button-primary-hover);
 }
 
 .nav-logout-button {
-    background-color: #dc3545;
+    background-color: var(--button-danger);
+    color: #ffffff;
 }
 
 .nav-logout-button:hover {
-    background-color: #c82333;
+    background-color: var(--button-danger-hover);
 }
 

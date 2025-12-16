@@ -14,7 +14,8 @@
   max-width: 600px;
 }
 
-.login-title {
+.login-title,
+.login-content {
   font-size: 2rem;
   font-weight: bold;
   color: #333;
@@ -141,6 +142,7 @@
 .login-demo-text strong {
   color: #333;
 }
+
 .register-notes {
   padding: 2rem;
   flex: 1;
